@@ -1,5 +1,5 @@
 line = []
-lex = None
+lex = ""
 lex_name = " "
 statement = []
 stmt_counter = 1
@@ -24,13 +24,15 @@ def get_token(token):
         statement = []
         stmt_counter = increment_statements(stmt_counter)
         file_updater = write_to_file(None)
-
+        
 
 def process_statement(statement):
     global out_file
     for x in statement:
         file_updater = write_to_file(x)
-        file_updater(x, lex_name, out_file, 0)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print(x)
+        file_updater(lex, lex_name, out_file, 0)
         # out_file.write(x)
 
 def write_to_file(token):
@@ -76,6 +78,8 @@ def read_next_line(file, outfile, thisline):
 
 
 def update(curr_token, lex_type, out_file, current_count):
+
+    global lex
     if is_vowel(lex_type[0]) == True:
         out_file.write(
             "Lexeme " + str(current_count) + " is " + curr_token + " and is an " + lex_type + "\n"
@@ -116,6 +120,7 @@ def is_vowel(c):
 
 
 def is_digit(c):
+    global lex
     found = False
 
     if (
@@ -132,6 +137,7 @@ def is_digit(c):
     ):
 
         found = True
+        lex = c
 
     return found
 
@@ -213,6 +219,8 @@ def is_literal(token_ptr):
         reduce(concat, token_ptr, "")                                           
         #found_numbers[0] = token_ptr                                           
         lex_name = "INT_LITERAL"                                                
+        #result[0] = result[0] + result[1]                                   
+        #lex = result[0]                                                     
                                                                                 
        # while is_digit() == True:                                              
             #functools.reduce(concat, line[1], 0)                               
@@ -246,25 +254,35 @@ def is_literal(token_ptr):
 
 
 def is_equality(token_ptr):
-
+    global statement
     global lex_name                                                             
     global lex                                                                  
     found = False                                                               
                                                                                 
                                                                                 
     two = []                                                                    
-                                                                                
+    
+
+    print("in is_equality")
+    print(statement)
+    #token_index = statement.index(token_ptr)
+    #REMOVE IT 
     if token_ptr == "=":                                                        
-                                                                                
-        if check_for_eq(token_ptr) == True:                                     
+        token_index = statement.index(token_ptr)                                                                          
+        if check_for_eq(statement[token_index + 1]) == True:                                     
             two = ['=', '=']                                                    
             concat_with_found_numbers = partial(concat, found_numbers)
             result = list(map(concat_with_found_numbers, two))                                     
                                                                                 
             print(result)                                                       
-                                                                                
+            result[0] = result[0] + result[1]                                   
             lex = result[0]                                                     
-            lex_name = "EQUALS_OP"                                              
+                                                                                
+            lex_name = "NOT_EQUALS_OP"                                          
+            statement[token_index] = result[0]                                  
+                                                                                
+            lex_name = "EQUALS_OP"
+            statement.remove('=')
         else:                                                                   
             lex = "="                                                           
             lex_name = "ASSIGN_OP"                                              
@@ -272,51 +290,70 @@ def is_equality(token_ptr):
         found = True                                                            
                                                                                 
     elif token_ptr == "<":                                                      
-                                                                                
-        if check_for_eq(token_ptr) == True:                                     
+        token_index = statement.index(token_ptr)                                                                        
+        if check_for_eq(statement[token_index + 1]) == True:                                     
             two = ['<', '='] 
             concat_with_found_numbers = partial(concat, found_numbers)
             result = list(map(concat_with_found_numbers, two))                                     
                                                                                 
             print(result)                                                       
                                                                                 
+            result[0] = result[0] + result[1]                                   
             lex = result[0]                                                     
                                                                                 
-            lex_name = "LESS_THEN_OR_EQUAL_OP"                                  
+            lex_name = "NOT_EQUALS_OP"                                          
+            statement[token_index] = result[0]                                  
+                                                                                
+            lex_name = "LESS_THEN_OR_EQUAL_OP"
+            statement.remove('=')
         else:                                                                   
             lex = "<"                                                           
             lex_name = "LESS_THEN_OP"                                           
                                                                                 
         found = True                                                            
                                                                                 
-    elif token_ptr == ">":                                                      
-        if check_for_eq(token_ptr) == True:                                     
+    elif token_ptr == ">":
+        token_index = statement.index(token_ptr)                                                          
+        if check_for_eq(statement[token_index + 1]) == True:                                     
             two = ['>', '=']
             concat_with_found_numbers = partial(concat, found_numbers)
             result = list(map(concat_with_found_numbers, two))                                     
             print(result)                                                       
                                                                                 
+            result[0] = result[0] + result[1]                                   
             lex = result[0]                                                     
                                                                                 
-            lex_name = "GREATER_THEN_OR_EQUAL_OP"                               
+            lex_name = "NOT_EQUALS_OP"                                          
+            statement[token_index] = result[0]                                  
                                                                                 
+            lex_name = "GREATER_THEN_OR_EQUAL_OP"                               
+            statement.remove('=')                                                                    
         else:                                                                   
             lex = ">"                                                           
             lex_name = "GREATER_THEN_OP"                                        
                                                                                 
         found = True                                                            
                                                                                 
-    elif token_ptr == "!":                                                      
-        if check_for_eq(token_ptr) == True:                                     
+    elif token_ptr == "!":
+        token_index = statement.index(token_ptr)                                                      
+        if check_for_eq(statement[token_index + 1]) == True:                                     
             two = ['!', '=']           
             concat_with_found_numbers = partial(concat, found_numbers)
             result = list(map(concat_with_found_numbers, two))                                     
                                                                                 
-            print(result)                                                       
-                                                                                
+            print("--------------------------------------")
+            print(result)
+                                                                   
+            result[0] = result[0] + result[1]                                                                    
             lex = result[0]                                                     
                                                                                 
-            lex_name = "NOT_EQUALS_OP"                                          
+            lex_name = "NOT_EQUALS_OP"
+            statement[token_index] = result[0]
+            print(statement[token_index])
+            print(statement[token_index -1])
+            print(statement[token_index +1])
+            statement.remove('=')
+            
         else:                                                                   
             lex = "!"                                                           
             lex_name = "NOT_OP"                                                 
