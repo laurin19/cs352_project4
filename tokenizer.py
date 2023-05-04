@@ -110,54 +110,82 @@ def is_digit(c):
 
 
 def is_arithmetic(token_ptr):
-    found = False
+    found = False                                                               
+    global lex_name                                                             
+    global lex                                                                  
+                                                                                                                                                
+    result = list(filter(lambda token_ptr: True if token_ptr == '+' or          
+                         token_ptr == '-' or token_ptr == '*' or                
+                         token_ptr == '/' or token_ptr == '^'                   
+                         else False, line))                                     
+                                                                                
+    print("in is_arithmetic")                                                   
+    print(result)                                                               
+    if len(result) > 0:                                                         
+        found = True                                                            
+                                                                                
+        if result[0] == "+":                                                    
+            lex = "+"                                                           
+            lex_name = "ADD_OP"                                                 
+                                                                                
+        elif result[0] == "-" :                                                 
+            lex = "-"                                                           
+            lex_name = "SUB_OP"                                                 
+                                                                                
+        elif result[0] == "*":                                                  
+            lex = "*"                                                           
+            lex_name = "MULT_OP"                                                
+                                                                                
+        elif result[0] == "/":                                                  
+            lex = "/"                                                           
+            lex_name = "DIV_OP"                                                 
+                                                                                
+                                                                                
+        elif result[0]  == "^":                                                 
+            lex = "^"                                                           
+            lex_name = "EXPON_OP"                                               
+                                                                                
+                                                                                
+    return found                                                                
 
-    if token_ptr == "+":
-        lex = "+"
-        lex_name = "ADD_OP"
-
-        found = True
-
-    elif token_ptr == "-":
-        lex = "-"
-        lex_name = "SUB_OP"
-
-        found = True
-
-    elif token_ptr == "*":
-        lex = "*"
-        lex_name = "MULT_OP"
-
-        found = True
-
-    elif token_ptr == "/":
-        lex = "/"
-        lex_name = "DIV_OP"
-
-        found = True
-
-    elif token_ptr == "^":
-        lex = "^"
-        lex_name = "EXPON_OP"
-
-        found = True
-
-    return found
-
-
-def is_literal(token_ptr):
-    found = False
-    global line
-    global found_numbers
-    if is_digit(line[1] == True):
-        found = True
-        found_numbers[0] = token_ptr
-        lex_name = "INT_LITERAL"
-        # count = 1;
-        while is_digit(line[1]) == True:
-            found_numbers += line[1]
-            line += 1
-            # count++
+            
+def concat(found_numbers, c):                                                   
+    #global found_numbers                                                       
+                                                                                
+    found_numbers = found_numbers + c                                           
+    return found_numbers                                                        
+                                                                                
+def is_literal(token_ptr):                                                      
+    found = False                                                               
+    global line                                                                 
+    global lex_name                                                             
+    global lex                                                                  
+                                                                                
+    #global found_numbers                                                       
+                                                                                
+    print("in is_literal")                                                      
+    print(line)                                                                 
+                                                                                
+    print(token_ptr)                                                            
+    print(is_digit(token_ptr))                                                  
+                                                                                
+                                                                                
+    if is_digit(token_ptr) == True:                                             
+        found = True                                                            
+        reduce(concat, token_ptr, "")                                           
+        #found_numbers[0] = token_ptr                                           
+        lex_name = "INT_LITERAL"                                                
+                                                                                
+       # while is_digit() == True:                                              
+            #functools.reduce(concat, line[1], 0)                               
+        #    line+=1                                                            
+                                                                                
+     #   print(found_numbers)                                                   
+    print(found)                                                                
+    print(lex_name)                                                             
+    print(lex_name[0])                                                          
+    print(token_ptr)                                                            
+         
 
     if token_ptr == "(":
         lex = "("
