@@ -148,6 +148,7 @@ def is_arithmetic(token_ptr):
 def is_literal(token_ptr):
     found = False
     global line
+    global found_numbers
     if is_digit(line[1] == True):
         found = True
         found_numbers[0] = token_ptr
@@ -234,75 +235,27 @@ def main():
     input_line = None
     in_file = None
     global out_file
-
-    if len(sys.argv) != 3:
-        print("Usage: tokenizer inputFile outputFile")
-        sys.exit(1)
-
-    try:
-        in_file = open(sys.argv[1], "r")
-    except IOError:
+    if len(sys.argv) != 3:                                                      
+        print("Usage: tokenizer inputFile outputFile")                          
+        sys.exit(1)                                                             
+                                                                                
+    try:                                                                        
+        in_file = open(sys.argv[1], "r")                                        
+    except IOError:                                                             
         sys.stderr.write("ERROR: could not open %s for reading\n" % sys.argv[1])
-        sys.exit(1)
-
-    try:
-        out_file = open(sys.argv[2], "w")
-    except IOError:
+        sys.exit(1)                                                             
+                                                                                
+    try:                                                                        
+        out_file = open(sys.argv[2], "w")                                       
+    except IOError:                                                             
         sys.stderr.write("ERROR: could not open %s for writing\n" % sys.argv[2])
-        sys.exit(1)
+
 
     start = 0
     count = 0
 
     read_next_line(in_file, out_file, in_file.readline())
 
-    #   line = input_line    for input_line in in_file:
-    #         # using .strip() to remove whitespace from the line
-    #         global line
-    #
-    #         # line = input_line
-    #         print(input_line)
-    #         print(line)
-    #
-    #         i = 0
-    #         while i < len(input_line):
-    #             line.append(input_line[i])
-    #             i += 1
-    #
-    #         print("here")
-    #         print(line[0])
-    #         # .strip()
-    #
-    #         while len(line) > 0:
-    #
-    #         global lex
-    #         global lex_name
-    #
-    #         print("input line")
-    #         print(input_line)
-    #         if count == 0:
-    #             statement_prompt(out_file, start)
-    #             start += 1
-    #
-    #         if line != None:
-    #             get_token(line)
-    #
-    #         if lex_name == "ERROR":
-    #             lex_error(out_file, lex)
-    #
-    #         elif lex_name != "INT_LITERAL":
-    #             update(lex, lex_name, out_file, count)
-    #             count += 1
-    #         elif lex_name == "INT_LITERAL":
-    #             update(found_numbers, lex_name, out_file, count)
-    #             count += 1
-    #             found_numbers = ""
-    #
-    #         if lex_name == "SEMI_COLON":
-    #             count = 0
-    #
-    #         line = []
-    #         # close files
     in_file.close()
     out_file.close()
     return 0
@@ -310,3 +263,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
