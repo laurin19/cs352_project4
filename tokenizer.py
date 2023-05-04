@@ -1,7 +1,10 @@
 line = []
 lex = None
 lex_name = None
+statement = []
+stmt_counter = 1
 found_numbers = ""
+out_file = None
 
 import sys
 
@@ -10,26 +13,39 @@ def get_token(token):
     # line
     global lex
     global lex_name
+    global statement
+    global stmt_counter
 
-    print("in get_token")
-    result = is_arithmetic(token)
-    if result == False:
-        result = is_equality(token)
-        if result == False:
-            result = is_literal(token)
-
-    if result == 0:
-        lex = token
-        lex_name = "ERROR"
-
-    return result
-
-    # if line[].isspace():
-    #  line+=1
+    # print("in get_token")
+    if token != ' ' and token != '\n' and token != '\t':
+        statement.append(token)
+    if token == ';':
+        process_statement(statement)
+        out_file.write("\n")
+        statement = []
+        stmt_counter += 1
 
 
-def print_line(out_file):
-    out_file.write(line)
+def process_statement(statement):
+    global out_file
+    for x in statement:
+        out_file.write(x)
+
+# recursion
+def read_next_line(file, outfile, thisline):
+    lineLength = len(thisline)
+    for i in range(lineLength):
+        get_token(thisline[i])
+
+    # outfile.writelines(thisline)
+
+    nextLine = file.readline()
+    if not nextLine:
+        return 0
+    else:
+        read_next_line(file, outfile, nextLine)
+
+
 
 
 def update(curr_token, lex_type, out_file, current_count):
@@ -217,7 +233,7 @@ def is_equality(token_ptr):
 def main():
     input_line = None
     in_file = None
-    out_file = None
+    global out_file
 
     if len(sys.argv) != 3:
         print("Usage: tokenizer inputFile outputFile")
@@ -238,54 +254,55 @@ def main():
     start = 0
     count = 0
 
-    #   line = input_line
+    read_next_line(in_file, out_file, in_file.readline())
 
-    for input_line in in_file:
-        # using .strip() to remove whitespace from the line
-        global line
-
-        # line = input_line
-        print(input_line)
-        print(line)
-
-        i = 0
-        while i < len(input_line):
-            line.append(input_line[i])
-            i += 1
-
-        print("here")
-        print(line[0])
-        # .strip()
-
-        while len(line) > 0:
-            global lex
-            global lex_name
-
-            print("input line")
-            print(input_line)
-            if count == 0:
-                statement_prompt(out_file, start)
-                start += 1
-
-            if line != None:
-                get_token(line)
-
-            if lex_name == "ERROR":
-                lex_error(out_file, lex)
-
-            elif lex_name != "INT_LITERAL":
-                update(lex, lex_name, out_file, count)
-                count += 1
-            elif lex_name == "INT_LITERAL":
-                update(found_numbers, lex_name, out_file, count)
-                count += 1
-                found_numbers = ""
-
-            if lex_name == "SEMI_COLON":
-                count = 0
-
-            line = []
-            # close files
+    #   line = input_line    for input_line in in_file:
+    #         # using .strip() to remove whitespace from the line
+    #         global line
+    #
+    #         # line = input_line
+    #         print(input_line)
+    #         print(line)
+    #
+    #         i = 0
+    #         while i < len(input_line):
+    #             line.append(input_line[i])
+    #             i += 1
+    #
+    #         print("here")
+    #         print(line[0])
+    #         # .strip()
+    #
+    #         while len(line) > 0:
+    #
+    #         global lex
+    #         global lex_name
+    #
+    #         print("input line")
+    #         print(input_line)
+    #         if count == 0:
+    #             statement_prompt(out_file, start)
+    #             start += 1
+    #
+    #         if line != None:
+    #             get_token(line)
+    #
+    #         if lex_name == "ERROR":
+    #             lex_error(out_file, lex)
+    #
+    #         elif lex_name != "INT_LITERAL":
+    #             update(lex, lex_name, out_file, count)
+    #             count += 1
+    #         elif lex_name == "INT_LITERAL":
+    #             update(found_numbers, lex_name, out_file, count)
+    #             count += 1
+    #             found_numbers = ""
+    #
+    #         if lex_name == "SEMI_COLON":
+    #             count = 0
+    #
+    #         line = []
+    #         # close files
     in_file.close()
     out_file.close()
     return 0
