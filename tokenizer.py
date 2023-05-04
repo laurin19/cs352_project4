@@ -51,8 +51,9 @@ def check_white_space(token, fn):
     if token != ' ' and token != '\n' and token != '\t':
         fn(token)
 
-def add_to_statement(token):
-    statement.append(token)
+#anonymous function
+add_to_statement = lambda token: statement.append(token)
+
 
 #pure function
 def increment_statements(i):
