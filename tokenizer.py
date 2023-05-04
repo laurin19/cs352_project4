@@ -1,6 +1,6 @@
 line = []
 lex = None
-lex_name = None
+lex_name = " "
 statement = []
 stmt_counter = 1
 found_numbers = ""
@@ -17,19 +17,46 @@ def get_token(token):
     global stmt_counter
 
     # print("in get_token")
-    if token != ' ' and token != '\n' and token != '\t':
-        statement.append(token)
+    check_white_space(token, add_to_statement)
     if token == ';':
         process_statement(statement)
         out_file.write("\n")
         statement = []
-        stmt_counter += 1
+        stmt_counter = increment_statements(stmt_counter)
+        file_updater = write_to_file(None)
 
 
 def process_statement(statement):
     global out_file
     for x in statement:
-        out_file.write(x)
+        file_updater = write_to_file(x)
+        file_updater(x, lex_name, out_file, 0)
+        # out_file.write(x)
+
+def write_to_file(token):
+    global lex_name
+    if (
+        is_digit(token)
+        or is_literal(token)
+        or is_equality(token)
+        or is_arithmetic(token)
+    ):
+        return update
+    elif token is None:
+        return statement_prompt
+
+# function definition which calls another function definition
+# with at least one function definition
+def check_white_space(token, fn):
+    if token != ' ' and token != '\n' and token != '\t':
+        fn(token)
+
+def add_to_statement(token):
+    statement.append(token)
+
+#pure function
+def increment_statements(i):
+    return i+1
 
 # recursion
 def read_next_line(file, outfile, thisline):
@@ -51,11 +78,11 @@ def read_next_line(file, outfile, thisline):
 def update(curr_token, lex_type, out_file, current_count):
     if is_vowel(lex_type[0]) == True:
         out_file.write(
-            "Lexeme", current_count, "is", curr_token, "and is an", lex_type, "\n"
+            "Lexeme " + str(current_count) + " is " + curr_token + " and is an " + lex_type + "\n"
         )
     else:
         out_file.write(
-            "Lexeme", current_count, "is", curr_token, "and is a", lex_type, "\n"
+            "Lexeme " + str(current_count) + " is " + curr_token + " and is a " + lex_type + "\n"
         )
 
     if lex_name == "SEMI_COLON":
@@ -149,7 +176,7 @@ def is_literal(token_ptr):
     found = False
     global line
     global found_numbers
-    if is_digit(line[1] == True):
+    if is_digit(token_ptr) is True:
         found = True
         found_numbers[0] = token_ptr
         lex_name = "INT_LITERAL"
