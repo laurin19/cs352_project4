@@ -120,7 +120,7 @@ def is_vowel(c):
 
 
 def is_digit(c):
-    global lex
+    #global lex
     found = False
 
     if (
@@ -137,7 +137,7 @@ def is_digit(c):
     ):
 
         found = True
-        lex = c
+     #   lex = c
 
     return found
 
@@ -204,7 +204,7 @@ def is_literal(token_ptr):
     found = False                                                               
     global lex_name                                                             
     global lex                                                                  
-                                                                                
+    global statement                                                                            
     #global found_numbers                                                       
                                                                                 
     print("in is_literal")                                                      
@@ -213,16 +213,37 @@ def is_literal(token_ptr):
     print(token_ptr)                                                            
     print(is_digit(token_ptr))                                                  
                                                                                 
-                                                                                
-    if is_digit(token_ptr) == True:                                             
+    nums = []
+    #token_index = statement.index(token_ptr)
+    if is_digit(token_ptr) == True:
+        token_index = statement.index(token_ptr)                                             
+        #token_index = statement.index(token_ptr)
         found = True                                                            
-        reduce(concat, token_ptr, "")                                           
-        #found_numbers[0] = token_ptr                                           
+        #result = reduce(concat, token_ptr, "")                                           
         lex_name = "INT_LITERAL"                                                
-        #result[0] = result[0] + result[1]                                   
-        #lex = result[0]                                                     
-                                                                                
-       # while is_digit() == True:                                              
+        
+        index = statement.index(token_ptr)
+
+        while is_digit(statement[index]) == True:
+            
+            if index > 0 and is_digit(statement[index -1]):
+
+                nums.append(statement.pop(index)) 
+            
+            else:
+                nums.append(statement[index])
+                index+=1
+            #statement.pop(index)
+            #print(statement[index])
+            #index+=1
+            #statement.pop(index)
+            #also remove them from the list
+        result = reduce(concat, nums, "")
+        
+        lex = result                                                     
+        statement[token_index] = result                                                                        
+       
+       #while is_digit() == True:                                              
             #functools.reduce(concat, line[1], 0)                               
         #    line+=1                                                            
                                                                                 
