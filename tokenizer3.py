@@ -1,3 +1,15 @@
+"""
+CS352 Project 4: Functional Programming
+
+This program models a lexical analyzer but uses functional programming concepts
+to accomplish this.
+
+Authors: Laurin Burge and Daniel Aoulou
+
+Date: 5/5/23
+
+"""
+
 line = []
 lex = ""
 lex_name = " "
@@ -10,7 +22,13 @@ import sys
 from functools import partial
 
 def get_token(token):
-    # line
+    """ This function identifies the type of lexeme that has been passed in 
+        and prints a message describing and identifying the lexeme.
+
+    Args: 
+        string token: the token to be identified     
+
+    """
     global lex
     global lex_name
     global statement
@@ -27,6 +45,14 @@ def get_token(token):
         
 
 def process_statement(statement):
+    """This function writes statements and calls necessary functions to write
+       to the outfile 
+
+    Args: 
+        list statement: The list the holds the tokens from the input file line
+
+    """
+
     global out_file
     for x in statement:
         file_updater = write_to_file(x)
@@ -36,6 +62,17 @@ def process_statement(statement):
         # out_file.write(x)
 
 def write_to_file(token):
+    """
+    Args:
+        string token: the token that we are currently looking at 
+
+    Returns:
+        update: a function that will update and write the lexemes and their 
+                name, etc to the outfile
+
+
+    """
+
     global lex_name
     if (
         #is_digit(token)
@@ -50,18 +87,49 @@ def write_to_file(token):
 # function definition which calls another function definition
 # with at least one function definition
 def check_white_space(token, fn):
+    """This function checks to see if the token is a white space character
+
+    Args:
+        string token: the string 
+
+        
+
+    """
     if token != ' ' and token != '\n' and token != '\t':
         fn(token)
 
 def add_to_statement(token):
+    """Adds a token to the statement list
+    
+    Args:
+        string token: a string that will be added to a list
+    """
+
     statement.append(token)
 
 #pure function
 def increment_statements(i):
+    """Increments the param by 1
+
+    Args:
+        int i: the int you want to increment
+
+    """
     return i+1
 
 # recursion
 def read_next_line(file, outfile, thisline):
+    """ Reading the file in line by line 
+
+    Args:
+        file: the input file
+
+        file outfile: the file to write to
+
+        list thisline: the current line 
+              
+    """            
+
     lineLength = len(thisline)
     for i in range(lineLength):
         get_token(thisline[i])
@@ -78,7 +146,19 @@ def read_next_line(file, outfile, thisline):
 
 
 def update(curr_token, lex_type, out_file, current_count):
+    """This function increments necessary ints whenever a lexeme is added
+        and prints our lexeme message to the output file.
 
+    Args:
+        string curr_token: current character that was identified
+
+        string lex_type: string representing the lexeme type
+
+        file out_file: file to output to
+
+        int current_count: the lexeme count
+
+    """    
     global lex
     if is_vowel(lex_type[0]) == True:
         out_file.write(
@@ -94,14 +174,39 @@ def update(curr_token, lex_type, out_file, current_count):
 
 
 def statement_prompt(out_file, start):
+    """ This function prints otu the necessary message given when a new 
+        statement occurs.
+    Args:
+        file out_file: file to be written to
+        
+        int start: The line number
+        
+    """
     out_file.write("Statement " + str(start) + "\n")
 
 
 def lex_error(out_file, token):
+    """ This function outputs to the correct file a message whenever a lexical
+        error is identified
+
+    Args:
+        file out_file: file to be written to
+
+        string token: character identified as an error
+
+    """
     out_file.write("==> " + str(token) + "\nLexical error: not a lexeme\n\n")
 
 
 def is_vowel(c):
+    """ Checks to see if the param is a vowel or not                                  
+    Args:                                                                       
+        string c: The string to check                                            
+    Returns:                                                                    
+        boolean: True if the param was a vowel and false otherwise             
+                                                                                
+    """                                                                         
+    
     found = False
 
     to_check = c.lower()
@@ -121,6 +226,13 @@ def is_vowel(c):
 
 def is_digit(c):
     #global lex
+    """ Checks to see if the param is a number 
+    Args:
+        string c: The string to check
+    Returns:
+        boolean: True if the param was a number and false otherwise
+
+    """
     found = False
 
     if (
@@ -141,8 +253,18 @@ def is_digit(c):
 
     return found
 
-
+#filter used here 
 def is_arithmetic(token_ptr):
+    """ This function identifies the lexeme if it is a type of arithmetic       
+        So it could be +, -, *, /, ^                                
+    Args:                                                                       
+        string token_ptr: The token to be identified                            
+                                                                                
+    Returns:                                                                    
+        boolean found: True if the token is an arithmetic lexeme, false otherwise 
+                                                                                
+    """                                                                         
+    
     found = False                                                               
     global lex_name                                                             
     global lex                                                                  
@@ -150,7 +272,9 @@ def is_arithmetic(token_ptr):
     arithmetic = ['+', '-', '*', '/', '^']
 
     print(token_ptr)                                                                            
-    #global line                                                                 
+    #global line 
+    
+    #filter used here
     result = list(filter(lambda op: True if op == token_ptr else False, arithmetic))                                                                            
     print("in is_arithmetic")
     print(result)                                                   
@@ -185,22 +309,48 @@ def is_arithmetic(token_ptr):
     return found                                                                
 
 
-def concat(found_numbers, c):                                                   
-    #global found_numbers                                                       
-                                                                                
-    found_numbers = found_numbers + c                                           
-    return found_numbers                                                        
+def concat(c, c2):                                                   
+    """ This function concatenates 2 strings together
+    Args:
+        string c: the first string to concatenate
+        string c2: the second string to concatenate
+    
+    Returns:
+        string: the concatenated string of both arguments
+
+    """                                                                            
+    c = c + c2                                           
+    return c                                                      
 
 
 
 def check_for_eq(token_ptr):                                                    
+    """This function checks to see if the parameter is an equal sign or not.
+
+    Args:
+        string token_ptr: The string to check if the param is an equals sign      
+        
+    Returns:
+        boolean: True if the param is an '=' and false otherwise
+    """
     if token_ptr == '=':                                                        
         return True                                                             
     else:                                                                       
         return False                                                            
 
-
+#reduce used here
 def is_literal(token_ptr):
+    """ This function identifies the lexeme if it is a type of literal.        
+        So it could be (, ), ;, or int literals                             
+    Args:                                                                       
+        string token_ptr: The token to be identified                            
+                                                                                
+    Returns:                                                                    
+        boolean found: True if the token is an literal lexeme, false otherwise 
+                                                                                
+    """                                                                         
+
+
     found = False                                                               
     global lex_name                                                             
     global lex                                                                  
@@ -238,6 +388,7 @@ def is_literal(token_ptr):
             #index+=1
             #statement.pop(index)
             #also remove them from the list
+        #reduce here
         result = reduce(concat, nums, "")
         
         lex = result                                                     
@@ -252,7 +403,8 @@ def is_literal(token_ptr):
     print(lex_name)                                                             
     print(lex_name[0])                                                          
     print(token_ptr)                                                            
-
+    
+    
     if token_ptr == "(":
         lex = "("
         lex_name = "LEFT_PAREN"
@@ -273,8 +425,19 @@ def is_literal(token_ptr):
 
     return found
 
-
+#map used in here
 def is_equality(token_ptr):
+    """ This function identifies the lexeme if it is a type of equality
+        So it could be =, ==, <, <=, >, >=, !, !=
+    Args:
+        string token_ptr: The token to be identified
+
+    Returns:
+        boolean found: True if the token is an equality lexeme, false otherwise
+
+    """
+
+
     global statement
     global lex_name                                                             
     global lex                                                                  
@@ -293,6 +456,7 @@ def is_equality(token_ptr):
         if check_for_eq(statement[token_index + 1]) == True:                                     
             two = ['=', '=']                                                    
             concat_with_found_numbers = partial(concat, found_numbers)
+            #map here
             result = list(map(concat_with_found_numbers, two))                                     
                                                                                 
             print(result)                                                       
@@ -315,6 +479,7 @@ def is_equality(token_ptr):
         if check_for_eq(statement[token_index + 1]) == True:                                     
             two = ['<', '='] 
             concat_with_found_numbers = partial(concat, found_numbers)
+            #map here
             result = list(map(concat_with_found_numbers, two))                                     
                                                                                 
             print(result)                                                       
@@ -338,6 +503,7 @@ def is_equality(token_ptr):
         if check_for_eq(statement[token_index + 1]) == True:                                     
             two = ['>', '=']
             concat_with_found_numbers = partial(concat, found_numbers)
+            #map here
             result = list(map(concat_with_found_numbers, two))                                     
             print(result)                                                       
                                                                                 
@@ -360,6 +526,7 @@ def is_equality(token_ptr):
         if check_for_eq(statement[token_index + 1]) == True:                                     
             two = ['!', '=']           
             concat_with_found_numbers = partial(concat, found_numbers)
+            #map here
             result = list(map(concat_with_found_numbers, two))                                     
                                                                                 
             print("--------------------------------------")
@@ -385,6 +552,13 @@ def is_equality(token_ptr):
 
 
 def main():
+    """Main function of the program. Checks to see if the user put the correct
+       number of command line arguments and calls the function to read in the
+       input from the input file.
+    
+    Returns:
+        int: 0 
+    """
     input_line = None
     in_file = None
     global out_file
