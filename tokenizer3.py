@@ -7,7 +7,8 @@ found_numbers = ""
 out_file = None
 
 import sys
-from functools import partial
+from functools import partial, reduce
+
 
 def get_token(token):
     # line
@@ -28,11 +29,14 @@ def get_token(token):
 
 def process_statement(statement):
     global out_file
+    out_file.write("Statement #" + str(stmt_counter) + "\n")
+
     for x in statement:
         file_updater = write_to_file(x)
         file_updater(x, lex_name, out_file, 0)
         # out_file.write(x)
 
+#Return a function definition you wrote as the return value from a function definition that you wrote.
 def write_to_file(token):
     global lex_name
     if (
@@ -51,18 +55,18 @@ def check_white_space(token, fn):
     if token != ' ' and token != '\n' and token != '\t':
         fn(token)
 
-def add_to_statement(token):
-    statement.append(token)
+#anonymous function
+add_to_statement = lambda token: statement.append(token)
 
 #pure function
 def increment_statements(i):
     return i+1
 
 # recursion
-def read_next_line(file, outfile, thisline):
-    lineLength = len(thisline)
+def read_next_line(file, outfile, this_line):
+    lineLength = len(this_line)
     for i in range(lineLength):
-        get_token(thisline[i])
+        get_token(this_line[i])
 
     # outfile.writelines(thisline)
 
@@ -86,7 +90,7 @@ def update(curr_token, lex_type, out_file, current_count):
         )
 
     if lex_name == "SEMI_COLON":
-        out_file.write("________________________________\n")
+        out_file.write("________________________________")
 
 
 def statement_prompt(out_file, start):

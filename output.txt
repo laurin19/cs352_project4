@@ -1,1 +1,42 @@
-Lexeme 0 is 1 and is a  
+Statement #1
+Lexeme 0 is 1 and is an INT_LITERAL
+Lexeme 0 is < and is a LESS_THEN_OP
+Lexeme 0 is = and is an EQUALS_OP
+Lexeme 0 is 2 and is an INT_LITERAL
+Lexeme 0 is ; and is a SEMI_COLON
+________________________________
+Statement #2
+Lexeme 0 is ( and is a LEFT_PAREN
+Lexeme 0 is 2 and is an INT_LITERAL
+Lexeme 0 is ^ and is an EXPON_OP
+Lexeme 0 is 2 and is an INT_LITERAL
+Lexeme 0 is ) and is a RIGHT_PAREN
+Lexeme 0 is ! and is a NOT_OP
+Lexeme 0 is = and is an EQUALS_OP
+Lexeme 0 is 1 and is an INT_LITERAL
+Lexeme 0 is 0 and is an INT_LITERAL
+Lexeme 0 is + and is an ADD_OP
+Lexeme 0 is 7 and is an INT_LITERAL
+Lexeme 0 is ; and is a SEMI_COLON
+________________________________
+Statement #3
+Lexeme 0 is 2 and is an INT_LITERAL
+Lexeme 0 is * and is a MULT_OP
+Lexeme 0 is 1 and is an INT_LITERAL
+Lexeme 0 is 9 and is an INT_LITERAL
+Lexeme 0 is + and is an ADD_OP
+Lexeme 0 is ( and is a LEFT_PAREN
+Lexeme 0 is 5 and is an INT_LITERAL
+Lexeme 0 is / and is a DIV_OP
+Lexeme 0 is 0 and is an INT_LITERAL
+Lexeme 0 is ) and is a RIGHT_PAREN
+Lexeme 0 is ; and is a SEMI_COLON
+________________________________
+Statement #4
+Lexeme 0 is 1 and is an INT_LITERAL
+Lexeme 0 is = and is an EQUALS_OP
+Lexeme 0 is = and is an EQUALS_OP
+Lexeme 0 is = and is an EQUALS_OP
+Lexeme 0 is 2 and is an INT_LITERAL
+Lexeme 0 is ; and is a SEMI_COLON
+________________________________
