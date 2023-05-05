@@ -1,5 +1,17 @@
+"""
+CS352 Project 4: Functional Programming
+
+This program models a lexical analyzer but uses functional programming concepts
+to accomplish this.
+
+Authors: Laurin Burge and Daniel Aoulou
+
+Date: 5/5/23
+
+"""
+
 line = []
-lex = None
+lex = ""
 lex_name = " "
 statement = []
 stmt_counter = 1
@@ -11,7 +23,13 @@ from functools import partial, reduce
 
 
 def get_token(token):
-    # line
+    """ This function identifies the type of lexeme that has been passed in
+        and prints a message describing and identifying the lexeme.
+
+    Args:
+        string token: the token to be identified
+
+    """
     global lex
     global lex_name
     global statement
@@ -28,6 +46,14 @@ def get_token(token):
 
 
 def process_statement(statement):
+    """This function writes statements and calls necessary functions to write
+       to the outfile
+
+    Args:
+        list statement: The list the holds the tokens from the input file line
+
+    """
+
     global out_file
     out_file.write("Statement #" + str(stmt_counter) + "\n")
 
@@ -38,6 +64,17 @@ def process_statement(statement):
 
 #Return a function definition you wrote as the return value from a function definition that you wrote.
 def write_to_file(token):
+    """
+    Args:
+        string token: the token that we are currently looking at
+
+    Returns:
+        update: a function that will update and write the lexemes and their
+                name, etc to the outfile
+
+
+    """
+
     global lex_name
     if (
         #is_digit(token)
@@ -52,17 +89,49 @@ def write_to_file(token):
 # function definition which calls another function definition
 # with at least one function definition
 def check_white_space(token, fn):
+    """This function checks to see if the token is a white space character
+
+    Args:
+        string token: the string
+
+
+
+    """
     if token != ' ' and token != '\n' and token != '\t':
         fn(token)
 
-#anonymous function
-add_to_statement = lambda token: statement.append(token)
+def add_to_statement(token):
+    """Adds a token to the statement list
+
+    Args:
+        string token: a string that will be added to a list
+    """
+
+    statement.append(token)
 
 #pure function
 def increment_statements(i):
+    """Increments the param by 1
+
+    Args:
+        int i: the int you want to increment
+
+    """
     return i+1
 
 # recursion
+def read_next_line(file, outfile, thisline):
+    """ Reading the file in line by line
+
+    Args:
+        file: the input file
+
+        file outfile: the file to write to
+
+        list thisline: the current line
+
+    """
+
 def read_next_line(file, outfile, this_line):
     lineLength = len(this_line)
     for i in range(lineLength):
@@ -80,6 +149,20 @@ def read_next_line(file, outfile, this_line):
 
 
 def update(curr_token, lex_type, out_file, current_count):
+    """This function increments necessary ints whenever a lexeme is added
+        and prints our lexeme message to the output file.
+
+    Args:
+        string curr_token: current character that was identified
+
+        string lex_type: string representing the lexeme type
+
+        file out_file: file to output to
+
+        int current_count: the lexeme count
+
+    """
+    global lex
     if is_vowel(lex_type[0]) == True:
         out_file.write(
             "Lexeme " + str(current_count) + " is " + curr_token + " and is an " + lex_type + "\n"
@@ -94,14 +177,39 @@ def update(curr_token, lex_type, out_file, current_count):
 
 
 def statement_prompt(out_file, start):
+    """ This function prints otu the necessary message given when a new
+        statement occurs.
+    Args:
+        file out_file: file to be written to
+
+        int start: The line number
+
+    """
     out_file.write("Statement " + str(start) + "\n")
 
 
 def lex_error(out_file, token):
+    """ This function outputs to the correct file a message whenever a lexical
+        error is identified
+
+    Args:
+        file out_file: file to be written to
+
+        string token: character identified as an error
+
+    """
     out_file.write("==> " + str(token) + "\nLexical error: not a lexeme\n\n")
 
 
 def is_vowel(c):
+    """ Checks to see if the param is a vowel or not
+    Args:
+        string c: The string to check
+    Returns:
+        boolean: True if the param was a vowel and false otherwise
+
+    """
+
     found = False
 
     to_check = c.lower()
@@ -120,6 +228,14 @@ def is_vowel(c):
 
 
 def is_digit(c):
+    #global lex
+    """ Checks to see if the param is a number
+    Args:
+        string c: The string to check
+    Returns:
+        boolean: True if the param was a number and false otherwise
+
+    """
     found = False
 
     if (
@@ -136,19 +252,32 @@ def is_digit(c):
     ):
 
         found = True
+     #   lex = c
 
     return found
 
-
+#filter used here
 def is_arithmetic(token_ptr):
-    found = False                                                               
+    """ This function identifies the lexeme if it is a type of arithmetic
+        So it could be +, -, *, /, ^
+    Args:
+        string token_ptr: The token to be identified
+
+    Returns:
+        boolean found: True if the token is an arithmetic lexeme, false otherwise
+
+    """
+
+    found = False
     global lex_name                                                             
     global lex                                                                  
     
     arithmetic = ['+', '-', '*', '/', '^']
 
     print(token_ptr)                                                                            
-    #global line                                                                 
+    #global line
+
+    #filter used here
     result = list(filter(lambda op: True if op == token_ptr else False, arithmetic))                                                                            
     print("in is_arithmetic")
     print(result)                                                   
@@ -183,26 +312,52 @@ def is_arithmetic(token_ptr):
     return found                                                                
 
 
-def concat(found_numbers, c):                                                   
-    #global found_numbers                                                       
-                                                                                
-    found_numbers = found_numbers + c                                           
-    return found_numbers                                                        
+def concat(c, c2):
+    """ This function concatenates 2 strings together
+    Args:
+        string c: the first string to concatenate
+        string c2: the second string to concatenate
+
+    Returns:
+        string: the concatenated string of both arguments
+
+    """
+    c = c + c2
+    return c
 
 
 
-def check_for_eq(token_ptr):                                                    
-    if token_ptr == '=':                                                        
+def check_for_eq(token_ptr):
+    """This function checks to see if the parameter is an equal sign or not.
+
+    Args:
+        string token_ptr: The string to check if the param is an equals sign
+
+    Returns:
+        boolean: True if the param is an '=' and false otherwise
+    """
+    if token_ptr == '=':
         return True                                                             
     else:                                                                       
         return False                                                            
 
-
+#reduce used here
 def is_literal(token_ptr):
-    found = False                                                               
+    """ This function identifies the lexeme if it is a type of literal.
+        So it could be (, ), ;, or int literals
+    Args:
+        string token_ptr: The token to be identified
+
+    Returns:
+        boolean found: True if the token is an literal lexeme, false otherwise
+
+    """
+
+
+    found = False
     global lex_name                                                             
     global lex                                                                  
-                                                                                
+    global statement
     #global found_numbers                                                       
                                                                                 
     print("in is_literal")                                                      
@@ -211,14 +366,38 @@ def is_literal(token_ptr):
     print(token_ptr)                                                            
     print(is_digit(token_ptr))                                                  
                                                                                 
-                                                                                
-    if is_digit(token_ptr) == True:                                             
+    nums = []
+    #token_index = statement.index(token_ptr)
+    if is_digit(token_ptr) == True:
+        token_index = statement.index(token_ptr)
+        #token_index = statement.index(token_ptr)
         found = True                                                            
-        reduce(concat, token_ptr, "")                                           
-        #found_numbers[0] = token_ptr                                           
+        #result = reduce(concat, token_ptr, "")
         lex_name = "INT_LITERAL"                                                
-                                                                                
-       # while is_digit() == True:                                              
+
+        index = statement.index(token_ptr)
+
+        while is_digit(statement[index]) == True:
+
+            if index > 0 and is_digit(statement[index -1]):
+
+                nums.append(statement.pop(index))
+
+            else:
+                nums.append(statement[index])
+                index+=1
+            #statement.pop(index)
+            #print(statement[index])
+            #index+=1
+            #statement.pop(index)
+            #also remove them from the list
+        #reduce here
+        result = reduce(concat, nums, "")
+
+        lex = result
+        statement[token_index] = result
+
+       #while is_digit() == True:
             #functools.reduce(concat, line[1], 0)                               
         #    line+=1                                                            
                                                                                 
@@ -227,6 +406,7 @@ def is_literal(token_ptr):
     print(lex_name)                                                             
     print(lex_name[0])                                                          
     print(token_ptr)                                                            
+
 
     if token_ptr == "(":
         lex = "("
@@ -248,27 +428,49 @@ def is_literal(token_ptr):
 
     return found
 
-
+#map used in here
 def is_equality(token_ptr):
+    """ This function identifies the lexeme if it is a type of equality
+        So it could be =, ==, <, <=, >, >=, !, !=
+    Args:
+        string token_ptr: The token to be identified
 
-    global lex_name                                                             
+    Returns:
+        boolean found: True if the token is an equality lexeme, false otherwise
+
+    """
+
+
+    global statement
+    global lex_name
     global lex                                                                  
     found = False                                                               
                                                                                 
                                                                                 
     two = []                                                                    
-                                                                                
+
+
+    print("in is_equality")
+    print(statement)
+    #token_index = statement.index(token_ptr)
+    #REMOVE IT
     if token_ptr == "=":                                                        
-                                                                                
-        if check_for_eq(token_ptr) == True:                                     
+        token_index = statement.index(token_ptr)
+        if check_for_eq(statement[token_index + 1]) == True:
             two = ['=', '=']                                                    
             concat_with_found_numbers = partial(concat, found_numbers)
-            result = list(map(concat_with_found_numbers, two))                                     
+            #map here
+            result = list(map(concat_with_found_numbers, two))
                                                                                 
             print(result)                                                       
-                                                                                
+            result[0] = result[0] + result[1]
             lex = result[0]                                                     
-            lex_name = "EQUALS_OP"                                              
+
+            lex_name = "NOT_EQUALS_OP"
+            statement[token_index] = result[0]
+
+            lex_name = "EQUALS_OP"
+            statement.remove('=')
         else:                                                                   
             lex = "="                                                           
             lex_name = "ASSIGN_OP"                                              
@@ -276,51 +478,73 @@ def is_equality(token_ptr):
         found = True                                                            
                                                                                 
     elif token_ptr == "<":                                                      
-                                                                                
-        if check_for_eq(token_ptr) == True:                                     
+        token_index = statement.index(token_ptr)
+        if check_for_eq(statement[token_index + 1]) == True:
             two = ['<', '='] 
             concat_with_found_numbers = partial(concat, found_numbers)
-            result = list(map(concat_with_found_numbers, two))                                     
+            #map here
+            result = list(map(concat_with_found_numbers, two))
                                                                                 
             print(result)                                                       
                                                                                 
-            lex = result[0]                                                     
+            result[0] = result[0] + result[1]
+            lex = result[0]
                                                                                 
-            lex_name = "LESS_THEN_OR_EQUAL_OP"                                  
+            lex_name = "NOT_EQUALS_OP"
+            statement[token_index] = result[0]
+
+            lex_name = "LESS_THEN_OR_EQUAL_OP"
+            statement.remove('=')
         else:                                                                   
             lex = "<"                                                           
             lex_name = "LESS_THEN_OP"                                           
                                                                                 
         found = True                                                            
                                                                                 
-    elif token_ptr == ">":                                                      
-        if check_for_eq(token_ptr) == True:                                     
+    elif token_ptr == ">":
+        token_index = statement.index(token_ptr)
+        if check_for_eq(statement[token_index + 1]) == True:
             two = ['>', '=']
             concat_with_found_numbers = partial(concat, found_numbers)
-            result = list(map(concat_with_found_numbers, two))                                     
+            #map here
+            result = list(map(concat_with_found_numbers, two))
             print(result)                                                       
                                                                                 
-            lex = result[0]                                                     
+            result[0] = result[0] + result[1]
+            lex = result[0]
                                                                                 
-            lex_name = "GREATER_THEN_OR_EQUAL_OP"                               
-                                                                                
+            lex_name = "NOT_EQUALS_OP"
+            statement[token_index] = result[0]
+
+            lex_name = "GREATER_THEN_OR_EQUAL_OP"
+            statement.remove('=')
         else:                                                                   
             lex = ">"                                                           
             lex_name = "GREATER_THEN_OP"                                        
                                                                                 
         found = True                                                            
                                                                                 
-    elif token_ptr == "!":                                                      
-        if check_for_eq(token_ptr) == True:                                     
+    elif token_ptr == "!":
+        token_index = statement.index(token_ptr)
+        if check_for_eq(statement[token_index + 1]) == True:
             two = ['!', '=']           
             concat_with_found_numbers = partial(concat, found_numbers)
-            result = list(map(concat_with_found_numbers, two))                                     
+            #map here
+            result = list(map(concat_with_found_numbers, two))
                                                                                 
-            print(result)                                                       
-                                                                                
+            print("--------------------------------------")
+            print(result)
+
+            result[0] = result[0] + result[1]
             lex = result[0]                                                     
                                                                                 
-            lex_name = "NOT_EQUALS_OP"                                          
+            lex_name = "NOT_EQUALS_OP"
+            statement[token_index] = result[0]
+            print(statement[token_index])
+            print(statement[token_index -1])
+            print(statement[token_index +1])
+            statement.remove('=')
+
         else:                                                                   
             lex = "!"                                                           
             lex_name = "NOT_OP"                                                 
@@ -331,6 +555,13 @@ def is_equality(token_ptr):
 
 
 def main():
+    """Main function of the program. Checks to see if the user put the correct
+       number of command line arguments and calls the function to read in the
+       input from the input file.
+
+    Returns:
+        int: 0
+    """
     input_line = None
     in_file = None
     global out_file
