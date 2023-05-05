@@ -20,19 +20,34 @@ The project folder contains the provided `unix_input.txt` and `unix_input_errors
 ## Functional Programming Features
 
 **Recursion instead of iteration:**  
-`read_next_line(file, outfile, this_line)`
+Line 131: `read_next_line(file, outfile, this_line)`
 
 **Pure function:**  
-`increment_statements(i)`
+Line 120: `increment_statements(i)`
 
 **A function definition that calls another of your function
 definitions with at least one function definition you wrote as an argument:**  
-`check_white_space(token, fn)`
+Line 96: `check_white_space(token, fn)`
 
 **Return a function definition you wrote as the return
 value from a function definition that you wrote:**  
-`write_to_file(token)`
+Line 68: `write_to_file(token)`
 
 **An anonymous function (that is, at least one lambda) that you wrote:**  
-`add_to_statement`
+Line 294: `lambda op: True if op == token_ptr else False, arithmetic`
 
+**Closure that involves some state (that is, variable) that is being preserved 
+and used within the closure using a function that you wrote:**  
+Line 337: `pre_concat(c)`
+
+**map():**  
+Line 470: `result = list(map(add_to_equals, two))`
+
+**filter():**  
+Line 292: `filter()`
+
+**reduce():**  
+Line 407: `result = reduce(concat, nums, "")`
+
+**list comprehension:**  
+Line 454: `equality_ops = [x for x in operators if any(`
